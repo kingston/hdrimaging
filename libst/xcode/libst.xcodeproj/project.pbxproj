@@ -295,11 +295,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				HEADER_SEARCH_PATHS = (
-					/opt/local/include,
-					"/opt/local/include/freetype2/**",
-					"/usr/local/opt/freetype/**",
-				);
+				HEADER_SEARCH_PATHS = "/usr/local/opt/freetype/**";
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = st;
 				ZERO_LINK = YES;
@@ -312,11 +308,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
-				HEADER_SEARCH_PATHS = (
-					/opt/local/include,
-					"/opt/local/include/freetype2/**",
-					"/usr/local/opt/freetype/**",
-				);
+				HEADER_SEARCH_PATHS = "/usr/local/opt/freetype/**";
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = st;
 			};

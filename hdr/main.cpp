@@ -108,7 +108,7 @@ STHDRImage* recover_hdr(vector<Photo>& photos, CameraResponse& response) {
  * of hdr such that 0 maps to 0 and max_val maps to 255.
  */
 void scale_hdr(STHDRImage* hdr, float max_val, STImage* result) {
-    int width = result->GetWidth(), height = result->GetHeight();
+    int width = hdr->GetWidth(), height = hdr->GetHeight();
     
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {
@@ -124,7 +124,7 @@ void scale_hdr(STHDRImage* hdr, float max_val, STImage* result) {
  * radiance over a given shutter time.
  */
 void virtual_photo(STHDRImage* hdr, CameraResponse& response, float shutter, STImage* result) {
-    int width = result->GetWidth(), height = result->GetHeight();
+    int width = hdr->GetWidth(), height = hdr->GetHeight();
     
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {
@@ -145,7 +145,31 @@ void virtual_photo(STHDRImage* hdr, CameraResponse& response, float shutter, STI
  *    scaling appropriately.
  */
 void tonemap(STHDRImage* hdr, float key, STImage* result) {
-  /* CS148 TODO */
+    // Calculate log average luminance
+    float luminanceSum = 0.0;
+    float delta = 0.000001;
+    int width = hdr->GetWidth(), height = hdr->GetHeight();
+    
+    for (int x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
+            STColor3f pixel = hdr->GetPixel(x, y);
+            luminanceSum += logf(delta + pixel.Y());
+        }
+    }
+    
+    float logAverageLuminance = expf(luminanceSum / (width * height));
+    
+    // Scale, compress, and store pixels
+    STColor3f white = STColor3f(1, 1, 1);
+    
+    for (int x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
+            STColor3f pixel = hdr->GetPixel(x, y);
+            STColor3f scaledPixel = pixel * (key / logAverageLuminance);
+            
+            result->SetPixel(x, y, STColor4ub(scaledPixel / (white + scaledPixel)));
+        }
+    }
 }
 
 //
